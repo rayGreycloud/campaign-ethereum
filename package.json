@@ -1,0 +1,11 @@
+{
+  "name": "campaign",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"mocha -c\""
+  },
+  "author": "rayGreycloud",
+  "license": "ISC"
+}
