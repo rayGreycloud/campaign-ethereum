@@ -43,5 +43,21 @@ describe('Campaigns', () => {
     assert.ok(campaign.options.address);
   });
   
+  it('should mark caller as campaign manager', async () => {
+    const manager = await campaign.methods.manager().call();
+    assert.equal(accounts[0], manager);
+  });
+  
+  it('should allow user to contribute and mark as approver', async () => {
+    await campaign.methods.contribute().send({
+      value: '10000000',
+      from: accounts[1]
+    });
+    // mapping returns bool
+    const isContributor = await campaign.methods.approvers(accounts[1]).call();
+    // if false, then not contributor and test fails
+    assert(isContributor);
+  });
+  
   
 });
