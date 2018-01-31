@@ -89,5 +89,41 @@ describe('Campaigns', () => {
     assert(false);    
   });
   
+  it('should allow manager to create request', async () => {
+    await campaign.methods
+      .createRequest('Buy Widgets', '1000000', accounts[4])
+      .send({
+        from: accounts[0],
+        gas: '1000000'
+      });
     
+    const request = await campaign.methods.requests(0).call();
+    
+    assert.equal('Buy Widgets', request.description);
+    assert.equal(accounts[4], request.recipient);
+    assert.equal(false, request.complete);
+  });
+  
+  it('should not allow contributor to create request', async () => {
+    // New contributor
+    await campaign.methods.contribute().send({
+      value: '10000000',
+      from: accounts[1]
+    });    
+    // Contributor calls createRequest
+    try {
+    await campaign.methods
+      .createRequest('Buy Widgets', '1000000', accounts[4])
+      .send({
+        from: accounts[1],
+        gas: '1000000'
+      });
+    } catch (err) {
+      // If error, test passes 
+      assert(true);
+      return;
+    }
+    // If no error, test fails
+    assert(false);
+  });
 });
