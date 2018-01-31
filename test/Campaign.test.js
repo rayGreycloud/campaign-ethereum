@@ -59,5 +59,35 @@ describe('Campaigns', () => {
     assert(isContributor);
   });
   
+  it('should allow contribution if equal or greater than minimum', async () => {
+    try {
+      await campaign.methods.contribute().send({
+        value: '10000000',
+        from: accounts[2]
+      });
+    } catch (err) {
+      // If err then test failed
+      assert(false);
+      return;
+    }
+    // If no error, test passed
+    assert(true);    
+  });
   
+  it('should not allow contribution if less than  minimum', async () => {
+    try {
+      await campaign.methods.contribute().send({
+        value: '1000000',
+        from: accounts[3]
+      });
+    } catch (err) {
+      // If err then test failed
+      assert(true);
+      return;
+    }
+    // If no error, test passed
+    assert(false);    
+  });
+  
+    
 });
