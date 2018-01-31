@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "\"mocha -c\""
+    "test": "\"mocha -c\"",
+    "dev": "next dev"
   },
   "author": "rayGreycloud",
   "license": "ISC",
