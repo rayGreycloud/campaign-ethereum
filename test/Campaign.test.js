@@ -50,8 +50,8 @@ describe('Campaigns', () => {
   
   it('should allow user to contribute and mark as approver', async () => {
     await campaign.methods.contribute().send({
-      value: '10000000',
-      from: accounts[1]
+      from: accounts[1],      
+      value: '10000000'
     });
     // mapping returns bool
     const isContributor = await campaign.methods.approvers(accounts[1]).call();
@@ -62,8 +62,8 @@ describe('Campaigns', () => {
   it('should allow contribution if equal or greater than minimum', async () => {
     try {
       await campaign.methods.contribute().send({
-        value: '10000000',
-        from: accounts[2]
+        from: accounts[2],      
+        value: '10000000'
       });
     } catch (err) {
       // If err then test failed
@@ -74,11 +74,11 @@ describe('Campaigns', () => {
     assert(true);    
   });
   
-  it('should not allow contribution if less than  minimum', async () => {
+  it('should not allow contribution if less than minimum', async () => {
     try {
       await campaign.methods.contribute().send({
-        value: '1000000',
-        from: accounts[3]
+        from: accounts[3],
+        value: '1000000'
       });
     } catch (err) {
       // If err then test failed
@@ -107,15 +107,15 @@ describe('Campaigns', () => {
   it('should not allow contributor to create request', async () => {
     // New contributor
     await campaign.methods.contribute().send({
-      value: '10000000',
-      from: accounts[1]
+      from: accounts[5],  
+      value: '10000000'
     });    
     // Contributor calls createRequest
     try {
     await campaign.methods
       .createRequest('Buy Widgets', '1000000', accounts[4])
       .send({
-        from: accounts[1],
+        from: accounts[5],
         gas: '1000000'
       });
     } catch (err) {
@@ -125,5 +125,43 @@ describe('Campaigns', () => {
     }
     // If no error, test fails
     assert(false);
+  });
+  
+  it('should process requests', async () => {
+    let balance = await web3.eth.getBalance(accounts[7]);
+    balance = web3.utils.fromWei(balance, 'ether');
+    startBalance = parseFloat(balance);
+        
+    await campaign.methods.contribute().send({
+      from: accounts[6],    
+      value: web3.utils.toWei('10', 'ether')
+    });    
+    
+    await campaign.methods
+      .createRequest('Buy Widgets', web3.utils.toWei('5', 'ether'), accounts[7])
+      .send({
+        from: accounts[0],
+        gas: '1000000'
+      });
+    
+    await campaign.methods
+      .approveRequest(0)
+      .send({
+        from: accounts[6],
+        gas: '1000000'      
+      });
+    
+    await campaign.methods
+      .finalizeRequest(0)
+      .send({
+        from: accounts[0],
+        gas: '1000000'        
+      });
+    
+    balance = await web3.eth.getBalance(accounts[7]);
+    balance = web3.utils.fromWei(balance, 'ether');
+    endBalance = parseFloat(balance);
+    
+    assert(endBalance = startBalance + 5);  
   });
 });
