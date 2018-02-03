@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "\"mocha -c\"",
-    "dev": "next dev"
+    "dev": "node server.js"
   },
   "author": "rayGreycloud",
   "license": "ISC",
