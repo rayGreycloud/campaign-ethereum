@@ -1,10 +1,11 @@
 {
   "name": "campaign",
-  "version": "1.0.0",
+  "version": "1.0.44",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "\"mocha -c\"",
+    "deploy": "node deploy.js",
     "dev": "node server.js"
   },
   "author": "rayGreycloud",
