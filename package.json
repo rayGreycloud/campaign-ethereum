@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "\"mocha -c\"",
-    "deploy": "node deploy.js",
+    "compile": "node ./ethereum/compile.js",
+    "deploy": "node ./ethereum/deploy.js",
     "dev": "node server.js"
   },
   "author": "rayGreycloud",
