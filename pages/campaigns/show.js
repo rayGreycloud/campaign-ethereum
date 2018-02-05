@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Button, Form, Input, Message } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
+import web3 from '../../ethereum/web3';
 import Layout from '../../components/Layout';
 // Using uppercase to avoid collision plus it's quasi-constructor function 
 import Campaign from '../../ethereum/campaign';
 
 class CampaignShow extends Component {
   static async getInitialProps(props) {
+    const contractAddress = props.query.address;
+    console.log(props.query.address);
     // Get specific campaign instance
     const campaign = Campaign(props.query.address);
     // Returns array-like object
@@ -17,15 +20,59 @@ class CampaignShow extends Component {
       balance: details[1],
       requestsCount: details[2],
       approversCount: details[3],
-      manager: details[4]
+      manager: details[4],
+      contractAddress: contractAddress
     };
   }
   
+  renderCards() {
+    const {
+      balance,
+      manager,
+      minimumContribution,
+      requestsCount,
+      approversCount  
+    } = this.props;
+    
+    const items = [
+      {
+        header: manager,
+        meta: 'Manager address',
+        description: 'Manager who created this Campaign. Only party able to create and finalize requests.',
+        style: { overflowWrap: 'break-word' }
+      },
+      {
+        header: minimumContribution,
+        meta: 'Minimum Contribution (wei)',
+        description: 'The minimum contribution amount in wei required to become an Approver.'
+      },
+      {
+        header: requestsCount,
+        meta: 'Number of Requests',
+        description: 'Number of requests to withdraw money from the Campaign. Requests must be approved by a majority of the Approvers.'
+      },
+      {
+        header: approversCount,
+        meta: 'Number of Approvers',
+        description: 'Number of Approvers for this Campaign. Approvers have contributed the miniumum contribution amount or more.'
+      },
+      {
+        header: web3.utils.fromWei(balance, 'ether'),
+        meta: 'Campaign Balance (ether)',
+        description: 'The current balance in ether connected to this Campaign.'
+      }
+    ];
+    
+    return <Card.Group items={items} />;
+  }
+
   render() {
     return (
       <Layout>
+        <h4>{this.props.contractAddress}</h4>
+        <hr/>        
         <h3>Campaign Details</h3>
-        
+        {this.renderCards()}
         
       </Layout>
 
