@@ -1,12 +1,10 @@
 import web3 from './web3';
 import CampaignFactory from './build/CampaignFactory.json';
-import { readAddressFile } from './helper';
-
-const address = readAddressFile();
+import address from './contractDeployAddress';
 
 const instance = new web3.eth.Contract(
   JSON.parse(CampaignFactory.interface),
-  address
+  address.address
 );
 
 export default instance;
