@@ -1,7 +1,9 @@
+const path = require('path');
+const fs = require('fs');
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
+
 const compiledFactory = require('./build/CampaignFactory.json');
-const { writeAddressFile } = require('./helper');
 
 const provider = new HDWalletProvider(
   // account mnemonic
@@ -11,6 +13,19 @@ const provider = new HDWalletProvider(
 );
 
 const web3 = new Web3(provider);
+
+const writeAddressFile = (address) => {
+  const filePath = path.resolve(__dirname,'contractDeployAddress.js');
+  
+  const content = `
+    const address = "${address}";
+  `;
+  
+  fs.writeFile(filePath, content, (err) => {
+    if (err) throw err;
+    console.log('Address file saved.');
+  });  
+}
 
 // Using function for async/await usage
 const deploy = async () => {
