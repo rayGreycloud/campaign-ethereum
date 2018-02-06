@@ -6,7 +6,6 @@ import ContributeForm from '../../components/ContributeForm';
 // Using uppercase to avoid collision plus it's quasi-constructor function 
 import Campaign from '../../ethereum/campaign';
 
-
 class CampaignShow extends Component {
   static async getInitialProps(props) {
     // Get specific campaign instance
@@ -33,12 +32,10 @@ class CampaignShow extends Component {
       requestsCount,
       approversCount  
     } = this.props;
-    
-    let balanceEther = web3.utils.fromWei(balance, 'ether');
-    
+        
     const items = [
       {
-        header: balanceEther,
+        header: web3.utils.fromWei(balance, 'ether'),
         meta: 'Campaign Balance (ether)',
         description: 'The current balance in ether connected to this Campaign.'
       },
@@ -83,7 +80,6 @@ class CampaignShow extends Component {
           </Grid.Column>
         </Grid>
       </Layout>
-
     );
   }
 }
