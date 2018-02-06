@@ -8,21 +8,19 @@ import Campaign from '../../ethereum/campaign';
 
 class CampaignShow extends Component {
   static async getInitialProps(props) {
-    const contractAddress = props.query.address;
-    console.log(props.query.address);
     // Get specific campaign instance
     const campaign = Campaign(props.query.address);
     // Returns array-like object
     const details = await campaign.methods.getDetails().call();
 
     // Details translation layer
-    return { 
+    return {
+      address: props.query.address, 
       minimumContribution: details[0],
       balance: details[1],
       requestsCount: details[2],
       approversCount: details[3],
-      manager: details[4],
-      contractAddress: contractAddress
+      manager: details[4]
     };
   }
   
@@ -70,7 +68,7 @@ class CampaignShow extends Component {
   render() {
     return (
       <Layout>
-        <h4>{this.props.contractAddress}</h4>
+        <h4>{this.props.address}</h4>
         <hr/>        
         <h3>Campaign Details</h3>
         <Grid>
@@ -78,7 +76,7 @@ class CampaignShow extends Component {
           {this.renderCards()}   
           </Grid.Column>
           <Grid.Column width={6}>
-        <ContributeForm />            
+        <ContributeForm address={this.props.address}/>            
           </Grid.Column>
         </Grid>
       </Layout>
