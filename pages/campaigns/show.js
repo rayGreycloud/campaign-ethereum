@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 import web3 from '../../ethereum/web3';
 import Layout from '../../components/Layout';
+import ContributeForm from '../../components/ContributeForm';
 // Using uppercase to avoid collision plus it's quasi-constructor function 
 import Campaign from '../../ethereum/campaign';
 
@@ -36,10 +37,14 @@ class CampaignShow extends Component {
     
     const items = [
       {
-        header: manager,
-        meta: 'Manager address',
-        description: 'Manager who created this Campaign. Only party able to create and finalize requests.',
-        style: { overflowWrap: 'break-word' }
+        header: web3.utils.fromWei(balance, 'ether'),
+        meta: 'Campaign Balance (ether)',
+        description: 'The current balance in ether connected to this Campaign.'
+      },
+      {
+        header: approversCount,
+        meta: 'Number of Approvers',
+        description: 'Number of Approvers for this Campaign. Approvers have contributed the miniumum contribution amount or more.'
       },
       {
         header: minimumContribution,
@@ -52,14 +57,10 @@ class CampaignShow extends Component {
         description: 'Number of requests to withdraw money from the Campaign. Requests must be approved by a majority of the Approvers.'
       },
       {
-        header: approversCount,
-        meta: 'Number of Approvers',
-        description: 'Number of Approvers for this Campaign. Approvers have contributed the miniumum contribution amount or more.'
-      },
-      {
-        header: web3.utils.fromWei(balance, 'ether'),
-        meta: 'Campaign Balance (ether)',
-        description: 'The current balance in ether connected to this Campaign.'
+        header: manager,
+        meta: 'Manager address',
+        description: 'Manager who created this Campaign. Only party able to create and finalize requests.',
+        style: { overflowWrap: 'break-word' }
       }
     ];
     
@@ -72,8 +73,14 @@ class CampaignShow extends Component {
         <h4>{this.props.contractAddress}</h4>
         <hr/>        
         <h3>Campaign Details</h3>
-        {this.renderCards()}
-        
+        <Grid>
+          <Grid.Column width={10}>
+          {this.renderCards()}   
+          </Grid.Column>
+          <Grid.Column width={6}>
+        <ContributeForm />            
+          </Grid.Column>
+        </Grid>
       </Layout>
 
     );
