@@ -70,7 +70,7 @@ class CampaignShow extends Component {
     return (
       <Layout>
         <h4>{this.props.address}</h4>
-        <hr/>        
+        <hr style={{ height: '1px', border: '0', boxShadow: 'inset 0 2px 1px -2px rgba(0,0,0,0.5)' }}/>        
         <h3>Campaign Details</h3>
         <Grid>
           <Grid.Row>
