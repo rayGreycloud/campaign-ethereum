@@ -81,11 +81,11 @@ describe('Campaigns', () => {
         value: '1000000'
       });
     } catch (err) {
-      // If err then test failed
+      // If err then test passed
       assert(true);
       return;
     }
-    // If no error, test passed
+    // If no error, test failed
     assert(false);    
   });
   
