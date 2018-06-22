@@ -7,7 +7,17 @@
     "test": "\"mocha -c\"",
     "compile": "node ./ethereum/compile.js",
     "deploy": "node ./ethereum/deploy.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "next build",
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "npm run build"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rayGreycloud/campaign-ethereum.git"
   },
   "author": "rayGreycloud",
   "license": "ISC",
