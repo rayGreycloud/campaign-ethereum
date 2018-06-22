@@ -9,7 +9,7 @@
     "deploy": "node ./ethereum/deploy.js",
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start",
     "heroku-postbuild": "npm run build"
   },
   "engines": {
